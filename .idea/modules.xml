@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SerialMonitor.iml" filepath="$PROJECT_DIR$/SerialMonitor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/intellij.iml" filepath="$PROJECT_DIR$/intellij.iml" />
     </modules>
   </component>
 </project>
