@@ -1,16 +1,12 @@
-package main.scala.main
+package main
+
+import serial.{SerialConnectionProps, SerialConnection}
+
 
 /**
  * Created by geo on 11/4/15.
  */
 
-import akka.actor._
-import akka.routing.RoundRobinPool
-import entity.SerialConnectionProps
-import serial.SerialConnection
-
-import scala.concurrent.duration.Duration
-import scala.concurrent.duration._
 
 
 //sealed trait PiMessage
@@ -39,7 +35,7 @@ import scala.concurrent.duration._
 //}
 //
 //class Master( nrOfWorkers : Int,
-//              nrOfMessages : Int,
+//              nrOfMessages : Int,import entity.SerialConnectionProps
 //              nrOfElements : Int,
 //              listener : ActorRef ) extends Actor
 //{

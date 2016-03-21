@@ -1,9 +1,6 @@
-package main.scala.main.serial
+package main.serial
 
-import java.io.{BufferedReader, InputStreamReader}
-
-import gnu.io.{SerialPort, CommPortIdentifier}
-import main.scala.main.entity.SerialConnectionProps
+import gnu.io.{CommPortIdentifier, SerialPort}
 
 /**
  * Created by geo on 3/6/16.

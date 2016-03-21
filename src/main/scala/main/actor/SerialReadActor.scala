@@ -1,4 +1,4 @@
-package main.scala.main.actor
+package main.actor
 
 
 /**

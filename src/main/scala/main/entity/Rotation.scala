@@ -1,4 +1,4 @@
-package main.scala.main.entity
+package main.entity
 
 /**
  * Created by geo on 3/6/16.
