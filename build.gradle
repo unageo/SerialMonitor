@@ -2,7 +2,7 @@ group 'Arduino'
 version '1.0-SNAPSHOT'
 
 // You need to add /usr/share/rxtx-2/lib/RXTXcomm.jar to your included classes!
-
+// Also add -Djava.library.path="/usr/lib64/rxtx-2/" to VM Options in Run
 apply plugin: 'scala'
 apply plugin: 'idea'
 
