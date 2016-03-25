@@ -8,7 +8,7 @@ import gnu.io.{CommPortIdentifier, SerialPort}
  * This class will get a connection to the serial port
  */
 case class SerialConnection( props   : SerialConnectionProps,
-                             process : String => Unit )
+                             process : Int => Unit )
 {
 
   def getPortId : Option[ CommPortIdentifier ] =
@@ -45,32 +45,34 @@ case class SerialConnection( props   : SerialConnectionProps,
   var num = 0
   var count = 0
   val buf = new StringBuilder
+  val b = new   StringBuffer
   val stream = serialPort.getInputStream
   //val vals = List.newBuilder[ String ]
   //val inputStreamReader = new BufferedReader( new InputStreamReader( serialPort.getInputStream ) )
-  Stream.continually( stream.read ).foreach(
-    ( str : Int ) =>
-    {
-      val ch = str.asInstanceOf[ Char ]
-
-      if( ch == '\n' )
-      {
-        //println( buf.result() )
-        //process( buf.result() )
-        buf.clear()
-        num += 1
-      }
-      else
-      {
-        buf += ch
-      }
-
-      if( num % 10000 == 0 )
-      {
-        count += 1
-
-        println(s"${System.currentTimeMillis} : Count = ${count * 10000}")
-      }
-    }
-  )
+  Stream.continually( stream.read ).foreach( process )
+//    ( str : Int ) =>
+//    {
+//      process( str )
+//      //val ch = str.asInstanceOf[ Char ]
+//
+////      if( ch == '\n' )
+////      {
+////        //println( buf.result() )
+////        process( buf.result() )
+////        buf.clear()
+////        num += 1
+////      }
+////      else
+////      {
+////        buf += ch
+////      }
+//
+////      if( num % 10000 == 0 )
+////      {
+////        count += 1
+////
+////        println(s"${System.currentTimeMillis} : Count = ${count * 10000}")
+////      }
+//    }
+//  )
 }

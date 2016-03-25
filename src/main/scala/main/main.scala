@@ -1,6 +1,9 @@
 package main
 
+import akka.actor.{Props, ActorSystem}
+import actor.{BuildActor, NewSerialEventActor, CountActor, SerialReadActor}
 import serial.{SerialConnectionProps, SerialConnection}
+import scala.concurrent.duration._
 
 
 /**
@@ -69,7 +72,7 @@ import serial.{SerialConnectionProps, SerialConnection}
 //    }
 //  }
 //}
-//
+//import scala.concurrent.duration._
 //class Listener extends Actor
 //{
 //  def receive =
@@ -83,9 +86,24 @@ import serial.{SerialConnectionProps, SerialConnection}
 
 object main extends App
 {
+  import system.dispatcher
   //val listener = new SerialListener
   val serialProps = SerialConnectionProps( "/dev/ttyACM0", 115200, 2000 )
-  val serConn = SerialConnection( serialProps, println( _ ) )
+  val system = ActorSystem( "SerialSystem" )
+
+  val serialReadCounter = system.actorOf( Props( new CountActor ), name="serialReadCounter" )
+  val processedCounter  = system.actorOf( Props( new CountActor ), name="processedCounter" )
+  val serialEventActor  = system.actorOf( Props( new NewSerialEventActor ), name = "newSerialEventActor" )
+  val buildActor  = system.actorOf( Props( new BuildActor ), name = "buildActor" )
+
+  val serialReader = system.actorOf( Props( new SerialReadActor( serialProps ) ), name = "serialReader" )
+
+  val cancellable = system.scheduler.schedule( 0.milliseconds,
+                                               1000.milliseconds,
+                                               serialReadCounter,
+                                               CountActor.Print )
+
+//  val serConn = SerialConnection( serialProps, println( _ ) )
 
 //  calculate(2, 100000000, 4 )
 //

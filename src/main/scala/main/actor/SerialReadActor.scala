@@ -1,29 +1,47 @@
 package main.actor
 
+import akka.actor._
+import main.serial.{SerialConnection, SerialConnectionProps}
+
 
 /**
  * Created by geo on 3/6/16.
  */
-//class SerialReadActor( val props : SerialConnectionProps ) extends Actor with ActorLogging
-//{
-//  private def startReading() =
-//  {
-//
-//  }
-//
-//
-//  def receive =
-//  {
-//    case StartReading => startReading()
-//    case StopReading  => stopReading
-//    case _ => throw new RuntimeException( )
-//  }
-//
-//}
-//
-//
-//object SerialReadActor
-//{
-//  case object StartReading
-//  case object StopReading
-//}
+
+class SerialReadActor( val props : SerialConnectionProps ) extends Actor with ActorLogging
+{
+  //val countActor = context.actorOf( Props[CountActor( 10000 )], "serialCounter" )
+
+  val countActor = context.actorSelection( "akka://SerialSystem/user/serialReadCounter" )
+  val buildActor = context.actorSelection( "akka://SerialSystem/user/buildActor" )
+
+  private def processLine( str : String ) : Unit =
+  {
+    countActor ! CountActor.Increment
+  }
+
+  private def processInt( ch : Int ): Unit =
+  {
+    buildActor ! ch
+    countActor ! CountActor.Increment
+  }
+
+  val connection = SerialConnection( props, processInt )
+  var counter = 0
+  var multiples = 0
+
+//  ActorSystem.
+  def receive =
+  {
+    case myString : String =>
+    {
+      log.info( myString )
+    }
+  }
+
+}
+
+object SerialReadActor
+{
+  case object StartReading
+}
