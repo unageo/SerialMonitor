@@ -27,10 +27,7 @@ class SerialReadActor( val props : SerialConnectionProps ) extends Actor with Ac
   }
 
   val connection = SerialConnection( props, processInt )
-  var counter = 0
-  var multiples = 0
 
-//  ActorSystem.
   def receive =
   {
     case myString : String =>

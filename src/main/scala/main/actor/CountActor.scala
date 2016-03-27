@@ -8,9 +8,6 @@ import akka.actor.{Actor, ActorLogging}
 class CountActor extends Actor with ActorLogging
 {
   import CountActor._
-
-  log.info( "I AM ALIVE!" )
-  //val counter = Counter( printLimit, x => log.info( x.toString ) )
   var counter = 0
   var prevTime = System.currentTimeMillis()
 
@@ -25,7 +22,6 @@ class CountActor extends Actor with ActorLogging
       counter = 0
     }
   }
-
 }
 
 object CountActor
