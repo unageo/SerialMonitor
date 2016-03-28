@@ -10,28 +10,29 @@ import scala.collection.immutable.Queue
 /**
  * Created by geo on 3/22/16.
  */
+//
+//case class LastReadingDuration( list : List[ Rotation ], duration : Long )
+//case class ProcessDuration( duration : Long )
 
-case class LastReadingDuration( list : List[ Rotation ], duration : Long )
-case class ProcessDuration( duration : Long )
-
-class NewTiltReadingActor extends Actor with ActorLogging
+class NewTiltReadingActor( paths : List[ String ] ) extends Actor with ActorLogging
 {
 
-  var q = Queue[ Rotation ]()
+  //var q = Queue[ Rotation ]()
+  val router = context.actorOf( BroadcastGroup( paths ).props(), "broadcastRouter" )
 
-  def handleReading( opt : Option[ Rotation ] ) : Unit =
+  def handleNewReading( opt : Option[ Rotation ] ) : Unit =
   {
     opt match
     {
       case Some( reading ) =>
-        q = q.enqueue( reading )
+        router ! reading
       case None            =>
     }
   }
 
   def receive =
   {
-    case str : String => handleReading( Rotation.fromString( str ) )
+    case str : String => handleNewReading( Rotation.fromString( str ) )
     case _   => log.error( "UNKNOWN" )
   }
 }

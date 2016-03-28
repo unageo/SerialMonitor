@@ -30,6 +30,7 @@ object Rotation
     catch
     {
       case ex : NumberFormatException => None
+      case ex : ArrayIndexOutOfBoundsException => None
     }
   }
 }

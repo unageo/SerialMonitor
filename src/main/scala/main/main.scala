@@ -1,7 +1,7 @@
 package main
 
 import akka.actor.{Props, ActorSystem}
-import actor.{BuildActor, NewTiltReadingActor, CountActor, SerialReadActor}
+import actor._
 import serial.{SerialConnectionProps, SerialConnection}
 import scala.concurrent.duration._
 
@@ -20,7 +20,10 @@ object main extends App
 
   val serialReadCounter = system.actorOf( Props( new CountActor ), name="serialReadCounter" )
   val processedCounter  = system.actorOf( Props( new CountActor ), name="processedCounter" )
-  val serialEventActor  = system.actorOf( Props( new NewTiltReadingActor ), name = "newTiltReadingActor" )
+  val averageActor100   = system.actorOf( Props( new LinearAvgActor( 100 ) ), name="linearAvg100ms" )
+  val averageActor200   = system.actorOf( Props( new LinearAvgActor( 200 ) ), name="linearAvg200ms" )
+  val averageActor500   = system.actorOf( Props( new LinearAvgActor( 500 ) ), name="linearAvg500ms" )
+  val serialEventActor  = system.actorOf( Props( new NewTiltReadingActor( List( "/user/linearAvg100ms", "/user/linearAvg200ms", "/user/linearAvg500ms" ) ) ), name = "newTiltReadingActor" )
   val buildActor  = system.actorOf( Props( new BuildActor ), name = "buildActor" )
 
   val serialReader = system.actorOf( Props( new SerialReadActor( serialProps ) ), name = "serialReader" )
